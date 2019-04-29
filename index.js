@@ -98,7 +98,9 @@ function handleMessage(sender_psid, received_message) {
             let x = body["entities"]["lessons"][0]["value"];
             console.log('entities', x);
             if (x == "all_lessons")
-                console.log("woohooo");
+                response = {
+                    "text": "lessons are algebra, calculus, etc"
+                }
             else 
                 console.log("no ho");
     });
