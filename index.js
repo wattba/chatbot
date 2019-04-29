@@ -94,9 +94,9 @@ function handleMessage(sender_psid, received_message) {
         uri: 'https://api.wit.ai/message?v=20190429&q=' + encodeURI(received_message.text)
         }, function( err, res, body) {
             console.log('body is:', body);
-            let x = body["entities"];
+            let x = body["entities"]["lessons"][0]["value"];
             console.log('entities', x);
-            if (x.lessons[0].value == "all_lessons")
+            if (x == "all_lessons")
                 console.log("woohooo");
             else 
                 console.log("no ho");
