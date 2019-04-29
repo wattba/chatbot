@@ -78,15 +78,14 @@ app.get('/webhook', (req, res) => {
 function returnLessons (subjectNumber, sender_psid) {
     let response;
     request({
-        uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
+        uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/quick/chatbot/lessons?subject_id=' + subjectNumber
     }, function (err, res, body) {
             body = JSON.parse(body);
             var outputLessons = "";
             console.log("lessonBOdy: ", body);
             console.log("subject number is: ", subjectNumber);
-            var lessons = body.results[subjectNumber - 1].get_lessons;
-            for (var i = 0; i < lessons.length; i++) {
-                outputLessons += (i+1) + ". " + "Title: " + lessons[i].title + "\n" + "Content: " + lessons[i].content + "\n";
+            for (var i = 0; i < body.length; i++) {
+                outputLessons += (i+1) + ". " + "Title: " + body[i].title + "\n" + "Content: " + body[i].content + "\n";
             }
             response = {
                 "text": outputLessons
