@@ -87,12 +87,14 @@ function handleMessage(sender_psid, received_message) {
     //   }
     // }  
     console.log(received_message.text);
-    // request({
-    //     headers: {
-    //         'Authorization': 'Bearer 6BBFKFZUO3HVNGL5U2ASTY56IHHWRNTA',
-    //     uri: 'https://api.wit.ai/message?v=20190429&q=' + encodeURI(received_message.text)
-    //     }
-    // });
+    request({
+        headers: {
+            'Authorization': 'Bearer 6BBFKFZUO3HVNGL5U2ASTY56IHHWRNTA',
+        },
+        uri: 'https://api.wit.ai/message?v=20190429&q=' + encodeURI(received_message.text)
+        }, function( err, res, body) {
+            console.log('tony stark: ', body);
+    });
 
     // Sends the response message
     callSendAPI(sender_psid, response);    
