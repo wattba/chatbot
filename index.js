@@ -103,8 +103,10 @@ function handleMessage(sender_psid, received_message) {
                 }
             else 
                 console.log("no ho");
+            console.log('response1 is', response);
+    
     });
-
+    console.log('response2 is', response);
     // Sends the response message
     callSendAPI(sender_psid, response);    
 }
