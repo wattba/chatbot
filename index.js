@@ -77,15 +77,6 @@ app.get('/webhook', (req, res) => {
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
     let response;
-
-    // Check if the message contains text
-    // if (received_message.text) {    
-  
-    //   // Create the payload for a basic text message
-    //   response = {
-    //     "text": `You sent the message: "${received_message.text}". Now send me an image!`
-    //   }
-    // }  
     console.log(received_message.text);
     request({
         headers: {
@@ -95,9 +86,19 @@ function handleMessage(sender_psid, received_message) {
         }, function( err, res, body) {
             console.log('body is:', body);
             body = JSON.parse(body);
-            if (body["entities"]["lessons"] != undefined)
-                response = {
-                    "text": "lessons are algebra, calculus, etc"
+            if (body["entities"]["lessons"] != undefined) {
+                request({
+                    uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
+                }, function (err2, res2, body2) {
+                        body2 = JSON.parse(body2);
+                        var outputLessons = "";
+                        for (var i = 0; i < body2.count; i++) {
+                            outputLessons += (i+1) + ". " + body2.results[i] + "\n";
+                        }
+                        response = {
+                            "text": outputLessons;
+                        }
+                    })
                 }
             else if (body["entities"]["bye"] != undefined) {
                 response = {
