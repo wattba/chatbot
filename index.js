@@ -78,21 +78,17 @@ app.get('/webhook', (req, res) => {
 function returnLessons (subjectNumber) {
     request({
         uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
-    }, function (err2, res2, body2) {
-            body2 = JSON.parse(body2);
-            var outputSubjects = "";
-            for (var i = 0; i < body2.count; i++) {
-                outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
+    }, function (err, res, body) {
+            body = JSON.parse(body);
+            var outputLessons = "";
+            var lessons = body.results[subjectNumber].get_lessons;
+            for (var i = 0; i < lessons.length; i++) {
+                outputLessons += (i+1) + ". " + "Title: " + lessons[i].title + "\n" + "Content: " + lessons[i].content + "\n";
             }
             response = {
-                "text": outputSubjects
+                "text": outputLessons
             }
-            callSendAPI(sender_psid, response).then(() => {
-                response = {
-                    "text": "Can you please enter the subject number you want lessons for? :)"
-                }
-                return callSendAPI(sender_psid, response);
-            }); 
+            callSendAPI(sender_psid, response)
         })
 }
 // Handles messages events
@@ -134,6 +130,7 @@ function handleMessage(sender_psid, received_message) {
             }
             else if (body["entities"]["number"] != undefined) {
                 console.log("subject: ", body);
+                returnLessons(parseInt(body._text));
             } 
             else {
                 response = {
