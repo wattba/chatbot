@@ -80,15 +80,34 @@ function returnLessons (subjectNumber, sender_psid) {
     request({
         uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/quick/chatbot/lessons?subject_id=' + subjectNumber
     }, function (err, res, body) {
-            body = JSON.parse(body);
-            var outputLessons = "";
-            console.log("lessonBOdy: ", body);
-            console.log("subject number is: ", subjectNumber);
-            for (var i = 0; i < body.length; i++) {
-                outputLessons += (i+1) + ". " + "Title: " + body[i].title + "\n" + "Content: " + body[i].content + "\n";
-            }
+            // body = JSON.parse(body);
+            // var outputLessons = "";
+            // console.log("lessonBOdy: ", body);
+            // console.log("subject number is: ", subjectNumber);
+            // for (var i = 0; i < body.length; i++) {
+            //     outputLessons += (i+1) + ". " + "Title: " + body[i].title + "\n" + "Content: " + body[i].content + "\n";
+            // }
+            // response = {
+            //     "text": outputLessons
+            // }
             response = {
-                "text": outputLessons
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type":"generic",
+                        "elements":[
+                           {
+                            "title":"Lesson 1",
+                            "image_url":"https://via.placeholder.com/1000x1000.png?text=Maths Lesson B",
+                            "subtitle":"this about this topic",
+                            "default_action": {
+                              "type": "web_url",
+                              "url": "google.com",
+                            },
+                          },
+                        ]
+                    }
+                }
             }
             callSendAPI(sender_psid, response)
         })
