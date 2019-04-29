@@ -5,7 +5,8 @@ const
   express = require('express'),
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()), // creates express http server
-  request = require('request');
+//   request = require('request');
+  fetch  = require('node-fetch');
 const PAGE_ACCESS_TOKEN = "EAAisr0W2174BABxE3J7fOuItxSX9v6ZAeqtwQ5PV3MfEnkjxhTh7q4WZAA1hXuS0S48wyxxGM33xiCHEiakpCiknEoIqp5SOn4K5QxnnorPnVZAFYWRvyh85UelZBCllIbyQLuzqtqywNpPpvk2kieZAUFA5yETuXwbNZCRRgONgZDZD";
 // Creates the endpoint for our webhook 
 app.post('/webhook', (req, res) => {  
@@ -126,25 +127,37 @@ function handlePostback(sender_psid, received_postback) {
 // Sends response messages via the Send API
 function callSendAPI(sender_psid, response) {
     // Construct the message body
-    let request_body = {
-    "recipient": {
-        "id": sender_psid
-    },
-    "message": response
-    }
+    // let request_body = {
+    // "recipient": {
+    //     "id": sender_psid
+    // },
+    // "message": response
+    // }
       // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v2.6/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-        console.log('message sent!')
-        } else {
-        console.error("Unable to send message:" + err);
-        }
-    }); 
+    // request({
+    //     "uri": "https://graph.facebook.com/v2.6/me/messages",
+    //     "qs": { "access_token": PAGE_ACCESS_TOKEN },
+    //     "method": "POST",
+    //     "json": request_body
+    // }, (err, res, body) => {
+    //     if (!err) {
+    //     console.log('message sent!')
+    //     } else {
+    //     console.error("Unable to send message:" + err);
+    //     }
+    // }); 
+    let body = {
+        recipient: {
+          "id": sender_psid
+        },
+        "message": response
+      };
+      const qs = 'access_token=' + encodeURIComponent(PAGE_ACCESS_TOKEN); // Here you'll need to add your PAGE TOKEN from Facebook
+      return fetch('https://graph.facebook.com/v2.6/me/messages?' + qs, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body),
+      });
 }
 // Sets server port and logs message on success
 app.listen(process.env.PORT || 1337, () => console.log('webhook is listening'));
