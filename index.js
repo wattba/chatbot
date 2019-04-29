@@ -81,7 +81,9 @@ function returnLessons (subjectNumber) {
     }, function (err, res, body) {
             body = JSON.parse(body);
             var outputLessons = "";
-            var lessons = body.results[subjectNumber].get_lessons;
+            console.log("lessonBOdy: ", body);
+            console.log("subject number is: ", subjectNumber);
+            var lessons = body.results[subjectNumber - 1].get_lessons;
             for (var i = 0; i < lessons.length; i++) {
                 outputLessons += (i+1) + ". " + "Title: " + lessons[i].title + "\n" + "Content: " + lessons[i].content + "\n";
             }
