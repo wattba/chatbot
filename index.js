@@ -98,6 +98,7 @@ function handleMessage(sender_psid, received_message) {
                         response = {
                             "text": outputLessons
                         }
+                        callSendAPI(sender_psid, response); 
                     })
                 }
             else if (body["entities"]["bye"] != undefined) {
