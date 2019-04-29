@@ -93,6 +93,7 @@ function handleMessage(sender_psid, received_message) {
         },
         uri: 'https://api.wit.ai/message?v=20190429&q=' + encodeURI(received_message.text)
         }, function( err, res, body) {
+            console.log('body is:', body);
             if (body.entities.lessons[0].value == "all_lessons")
                 console.log("woohooo");
             else 
