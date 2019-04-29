@@ -93,7 +93,10 @@ function handleMessage(sender_psid, received_message) {
         },
         uri: 'https://api.wit.ai/message?v=20190429&q=' + encodeURI(received_message.text)
         }, function( err, res, body) {
-            console.log('tony stark: ', body);
+            if (body.entities.lessons[0].value == "all_lessons")
+                console.log("woohooo");
+            else 
+                console.log("no ho");
     });
 
     // Sends the response message
