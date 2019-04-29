@@ -132,7 +132,7 @@ function handleMessage(sender_psid, received_message) {
             }
             else if (body["entities"]["number"] != undefined) {
                 console.log("subject: ", body);
-                returnLessons(parseInt(body._text));
+                returnLessons(parseInt(body.entities.number[0].value));
             } 
             else {
                 response = {
