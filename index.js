@@ -93,7 +93,7 @@ function handleMessage(sender_psid, received_message) {
                         body2 = JSON.parse(body2);
                         var outputLessons = "";
                         for (var i = 0; i < body2.count; i++) {
-                            outputLessons += (i+1) + ". " + body2.results[i] + "\n";
+                            outputLessons += (i+1) + ". " + body2.results[i].name + "\n";
                         }
                         response = {
                             "text": outputLessons
