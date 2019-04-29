@@ -87,17 +87,17 @@ function handleMessage(sender_psid, received_message) {
         }, function( err, res, body) {
             console.log('body is:', body);
             body = JSON.parse(body);
-            if (body["entities"]["lessons"] != undefined) {
+            if (body["entities"]["subjects"] != undefined) {
                 request({
                     uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
                 }, function (err2, res2, body2) {
                         body2 = JSON.parse(body2);
-                        var outputLessons = "";
+                        var outputSubjects = "";
                         for (var i = 0; i < body2.count; i++) {
-                            outputLessons += (i+1) + ". " + body2.results[i].name + "\n";
+                            outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
                         }
                         response = {
-                            "text": outputLessons
+                            "text": outputSubjects
                         }
                         callSendAPI(sender_psid, response); 
                     })
