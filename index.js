@@ -95,14 +95,14 @@ function handleMessage(sender_psid, received_message) {
         }, function( err, res, body) {
             console.log('body is:', body);
             body = JSON.parse(body);
-            let x = body["entities"]["lessons"][0]["value"];
-            console.log('entities', x);
-            if (x == "all_lessons")
+            if (body["entities"]["lessons"][0]["value"])
                 response = {
                     "text": "lessons are algebra, calculus, etc"
                 }
-            else 
-                console.log("no ho");
+            else if  (body["entities"]["bye"][0]["value"])
+                response = {
+                    "text": "Ok, see you later"
+                }
             // Sends the response message
             callSendAPI(sender_psid, response);    
 
