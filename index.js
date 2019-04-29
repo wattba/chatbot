@@ -96,7 +96,7 @@ function handleMessage(sender_psid, received_message) {
                             outputLessons += (i+1) + ". " + body2.results[i] + "\n";
                         }
                         response = {
-                            "text": outputLessons;
+                            "text": outputLessons
                         }
                     })
                 }
