@@ -79,14 +79,21 @@ function handleMessage(sender_psid, received_message) {
     let response;
 
     // Check if the message contains text
-    if (received_message.text) {    
+    // if (received_message.text) {    
   
-      // Create the payload for a basic text message
-      response = {
-        "text": `You sent the message: "${received_message.text}". Now send me an image!`
-      }
-    }  
-    
+    //   // Create the payload for a basic text message
+    //   response = {
+    //     "text": `You sent the message: "${received_message.text}". Now send me an image!`
+    //   }
+    // }  
+    console.log(received_message.text);
+    // request({
+    //     headers: {
+    //         'Authorization': 'Bearer 6BBFKFZUO3HVNGL5U2ASTY56IHHWRNTA',
+    //     uri: 'https://api.wit.ai/message?v=20190429&q=' + encodeURI(received_message.text)
+    //     }
+    // });
+
     // Sends the response message
     callSendAPI(sender_psid, response);    
 }
