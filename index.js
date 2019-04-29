@@ -5,7 +5,7 @@ const
   express = require('express'),
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()), // creates express http server
-  request = require('request');
+  request = require('request'),
   fetch  = require('node-fetch');
 const PAGE_ACCESS_TOKEN = "EAAisr0W2174BABxE3J7fOuItxSX9v6ZAeqtwQ5PV3MfEnkjxhTh7q4WZAA1hXuS0S48wyxxGM33xiCHEiakpCiknEoIqp5SOn4K5QxnnorPnVZAFYWRvyh85UelZBCllIbyQLuzqtqywNpPpvk2kieZAUFA5yETuXwbNZCRRgONgZDZD";
 // Creates the endpoint for our webhook 
