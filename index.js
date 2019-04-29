@@ -76,6 +76,7 @@ app.get('/webhook', (req, res) => {
   });
 
 function returnLessons (subjectNumber) {
+    let response;
     request({
         uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
     }, function (err, res, body) {
