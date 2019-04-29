@@ -95,11 +95,11 @@ function handleMessage(sender_psid, received_message) {
         }, function( err, res, body) {
             console.log('body is:', body);
             body = JSON.parse(body);
-            if (body["entities"]["lessons"][0]["value"] != undefined)
+            if (body["entities"]["lessons"] != undefined)
                 response = {
                     "text": "lessons are algebra, calculus, etc"
                 }
-            else if (body["entities"]["bye"][0]["value"] != undefined) {
+            else if (body["entities"]["bye"] != undefined) {
                 response = {
                     "text": "Ok, see you later"
                 }
