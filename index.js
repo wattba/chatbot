@@ -105,6 +105,15 @@ function returnLessons (subjectNumber, sender_psid) {
                               "url": "google.com",
                             },
                           },
+                          {
+                            "title":"Lesson 1",
+                            "image_url":"https://via.placeholder.com/1000x1000.png?text=Maths Lesson B",
+                            "subtitle":"this about this topic",
+                            "default_action": {
+                              "type": "web_url",
+                              "url": "google.com",
+                            },
+                          },
                         ]
                     }
                 }
