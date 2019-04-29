@@ -99,10 +99,17 @@ function handleMessage(sender_psid, received_message) {
                 response = {
                     "text": "lessons are algebra, calculus, etc"
                 }
-            else if  (body["entities"]["bye"][0]["value"])
+            else if (body["entities"]["bye"][0]["value"]) {
                 response = {
                     "text": "Ok, see you later"
                 }
+            }
+            else {
+                response = {
+                    "text": "How can i help you?"
+                }
+            }
+
             // Sends the response message
             callSendAPI(sender_psid, response);    
 
