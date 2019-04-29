@@ -75,6 +75,26 @@ app.get('/webhook', (req, res) => {
     }
   });
 
+function returnLessons (subjectNumber) {
+    request({
+        uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
+    }, function (err2, res2, body2) {
+            body2 = JSON.parse(body2);
+            var outputSubjects = "";
+            for (var i = 0; i < body2.count; i++) {
+                outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
+            }
+            response = {
+                "text": outputSubjects
+            }
+            callSendAPI(sender_psid, response).then(() => {
+                response = {
+                    "text": "Can you please enter the subject number you want lessons for? :)"
+                }
+                return callSendAPI(sender_psid, response);
+            }); 
+        })
+}
 // Handles messages events
 function handleMessage(sender_psid, received_message) {
     let response;
@@ -99,7 +119,12 @@ function handleMessage(sender_psid, received_message) {
                         response = {
                             "text": outputSubjects
                         }
-                        callSendAPI(sender_psid, response); 
+                        callSendAPI(sender_psid, response).then(() => {
+                            response = {
+                                "text": "Can you please enter the subject number you want lessons for? :)"
+                            }
+                            return callSendAPI(sender_psid, response);
+                        }); 
                     })
                 }
             else if (body["entities"]["bye"] != undefined) {
@@ -107,6 +132,9 @@ function handleMessage(sender_psid, received_message) {
                     "text": "Ok, see you later"
                 }
             }
+            else if (body["entities"]["number"] != undefined) {
+                console.log("subject: ", body);
+            } 
             else {
                 response = {
                     "text": "How can i help you?"
