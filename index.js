@@ -75,7 +75,7 @@ app.get('/webhook', (req, res) => {
     }
   });
 
-function returnLessons (subjectNumber) {
+function returnLessons (subjectNumber, sender_psid) {
     let response;
     request({
         uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
@@ -133,7 +133,7 @@ function handleMessage(sender_psid, received_message) {
             }
             else if (body["entities"]["number"] != undefined) {
                 console.log("subject: ", body);
-                returnLessons(parseInt(body.entities.number[0].value));
+                returnLessons(parseInt(body.entities.number[0].value), sender_psid);
             } 
             else {
                 response = {
