@@ -94,7 +94,14 @@ function returnLessons (subjectNumber, sender_psid) {
                     "default_action": {
                         "type": "web_url",
                         "url": "google.com",
-                    }
+                    },
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Know More",
+                            "payload": "lesson_" //+ lesson_id
+                        }
+                    ]
                 });
             }
             // response = {
