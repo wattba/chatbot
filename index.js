@@ -9,6 +9,38 @@ const
   fetch  = require('node-fetch');
 const PAGE_ACCESS_TOKEN = "EAAisr0W2174BABxE3J7fOuItxSX9v6ZAeqtwQ5PV3MfEnkjxhTh7q4WZAA1hXuS0S48wyxxGM33xiCHEiakpCiknEoIqp5SOn4K5QxnnorPnVZAFYWRvyh85UelZBCllIbyQLuzqtqywNpPpvk2kieZAUFA5yETuXwbNZCRRgONgZDZD";
 // Creates the endpoint for our webhook 
+
+let mainMenuResponse = {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "generic",
+        "elements": [{
+          "title": "We are here for you...",
+          "subtitle": "What do you want to do?",
+          // "image_url": attachment_url,
+          "buttons": [
+            {
+              "type": "postback",
+              "title": "See subjects",
+              "payload": "seeSubjects",
+            },
+            // {
+            //   "type": "postback",
+            //   "title": "Get a Fashion tip",
+            //   "payload": "fashionTip",
+            // },
+            // {
+            //   "type": "postback",
+            //   "title": "Film Industry",
+            //   "payload": "celebrities",
+            // }
+          ],
+        }]
+      }
+    }
+}
+
 app.post('/webhook', (req, res) => {  
  
     let body = req.body;
@@ -164,10 +196,10 @@ function handleMessage(sender_psid, received_message) {
                 response = {
                     "text": "How can i help you?"
                 }
-            }
-
-            // Sends the response message
-            callSendAPI(sender_psid, response);    
+                callSendAPI(sender_psid, response).then(() => {
+                    return callSendAPI(sender_psid, mainMenuResponse);
+                }) 
+            }   
 
     });
 }
