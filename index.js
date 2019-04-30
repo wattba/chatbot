@@ -183,7 +183,11 @@ function handleMessage(locale, sender_psid, received_message) {
         }, function( err, res, body) {
             console.log('body is:', body);
             body = JSON.parse(body);
-            if (body["entities"]["subjects"] != undefined) {
+            
+            if ((received_message.text).includes("http") || (received_message.text).includes("www")) {
+                response = {"text": "Thanks for the link. Generating content from your link."}
+                callSendAPI(sender_psid, response);
+            } else if (body["entities"]["subjects"] != undefined) {
                 request({
                     uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
                 }, function (err2, res2, body2) {
@@ -213,9 +217,6 @@ function handleMessage(locale, sender_psid, received_message) {
                 let quickReplyPayload = received_message.quick_reply.payload;
                 let quickReplySubjectId = parseInt(quickReplyPayload.substring(10, ));
                 returnLessons(quickReplySubjectId, sender_psid)
-            } else if ((received_message.text).includes("http") || (received_message.text).includes("www")) {
-                response = {"text": "Thanks for the link. Generating content from your link."}
-                callSendAPI(sender_psid, response);
             } else {
                 response = {
                     "text": "How can i help you?"
