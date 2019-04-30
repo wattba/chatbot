@@ -229,6 +229,7 @@ function handlePostback(sender_psid, received_postback) {
                 //         "payload":body2.results[i].name
                 //     }
                 // );
+                console.log('body 2 is:', body2);
                 for (var i = 0; i < body2.count; i++) {
                 //     outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
                 // }
