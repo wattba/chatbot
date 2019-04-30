@@ -215,7 +215,26 @@ function handlePostback(sender_psid, received_postback) {
         let moreDetails = "Subject: Math\nGrade: 2\nContent: When you learn maths, you will be able to count... well sorta";
         response = {"text": moreDetails}
         callSendAPI(sender_psid, response);
-    } 
+    } else if (payload == "seeSubjects") {
+        request({
+            uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
+        }, function (err2, res2, body2) {
+                body2 = JSON.parse(body2);
+                var outputSubjects = "";
+                for (var i = 0; i < body2.count; i++) {
+                    outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
+                }
+                response = {
+                    "text": outputSubjects
+                }
+                callSendAPI(sender_psid, response).then(() => {
+                    response = {
+                        "text": "Please enter subject number like 'subject 1' to get lessons for subject 1"
+                    }
+                    return callSendAPI(sender_psid, response);
+                }); 
+            })
+    }
 }
 
 // Sends response messages via the Send API
