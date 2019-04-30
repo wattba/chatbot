@@ -155,6 +155,7 @@ function returnLessons (subjectNumber, sender_psid) {
 function handleMessage(sender_psid, received_message) {
     let response;
     console.log(received_message.text);
+    console.log('rm: ', received_message);
     request({
         headers: {
             'Authorization': 'Bearer 6BBFKFZUO3HVNGL5U2ASTY56IHHWRNTA',
@@ -191,7 +192,9 @@ function handleMessage(sender_psid, received_message) {
             else if (body["entities"]["number"] != undefined) {
                 console.log("subject: ", body);
                 returnLessons(parseInt(body.entities.number[0].value), sender_psid);
-            } 
+            } //else if (body._text ) {
+                
+            //}
             else {
                 response = {
                     "text": "How can i help you?"
