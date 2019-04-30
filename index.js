@@ -222,22 +222,29 @@ function handlePostback(sender_psid, received_postback) {
                 body2 = JSON.parse(body2);
                 // var outputSubjects = "";
                 let quick_replies = [];
-                quick_replies.push(
-                    {
-                        "content_type":"text",
-                        "title":body2.results[i].name,
-                        "payload":body2.results[i].name
-                    }
-                );
-                // for (var i = 0; i < body2.count; i++) {
+                // quick_replies.push(
+                //     {
+                //         "content_type":"text",
+                //         "title":body2.results[i].name,
+                //         "payload":body2.results[i].name
+                //     }
+                // );
+                for (var i = 0; i < body2.count; i++) {
                 //     outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
                 // }
                 // response = {
                 //     "text": outputSubjects
-                // }
+                    quick_replies.push(
+                        {
+                            "content_type":"text",
+                            "title":body2.results[i].name,
+                            "payload":body2.results[i].name
+                        }
+                    );
+                }
                 // callSendAPI(sender_psid, response).then(() => {
                     response = {
-                        "text": "Here is a quick reply!",
+                        "text": "Choose from the subjects below",
                         "quick_replies":quick_replies    
                     }
                     callSendAPI(sender_psid, response);
