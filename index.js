@@ -174,7 +174,16 @@ function handleMessage(sender_psid, received_message) {
 
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {
+    let response;
 
+    // Get the payload for the postback
+    let payload = received_postback.payload;
+    // Set the response based on the postback payload
+    if (payload === "lesson_") { // which is for get_started
+        let moreDetails = "Subject: Math\nGrade: 2\nContent: When you learn maths, you will be able to count... well sorta";
+        response = {"text": moreDetails}
+        callSendAPI(sender_psid, response);
+    } 
 }
 
 // Sends response messages via the Send API
