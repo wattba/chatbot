@@ -217,7 +217,12 @@ function handlePostback(sender_psid, received_postback) {
     let payload = received_postback.payload;
     console.log('r_payloafd:', payload);
     // Set the response based on the postback payload
-    if (payload.includes("lesson_")) { // which is for get_started
+    if (payload === "USER_DEFINED_PAYLOAD") { // which is for get_started
+        response = {"text": "Welcome, great to see you. Together we’re building the world’s largest curriculum repository."}
+        callSendAPI(sender_psid, response).then(() => {
+          return callSendAPI(sender_psid, mainMenuResponse);
+        });
+    } else if (payload.includes("lesson_")) { // which is for get_started
         let lesson_id;
         lesson_id = parseInt(payload.substring(7, ));
         request({
