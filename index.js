@@ -245,7 +245,7 @@ function handlePostback(locale, sender_psid, received_postback) {
             axios.post('http://18.236.191.192:3000/translate', {
                 "text": responseText,
                 "src_lang":"en", 
-                "dst_lang": "de"
+                "dst_lang": locale.substring(0,2)
             })
             .then((res) => {
                 console.log(res)
