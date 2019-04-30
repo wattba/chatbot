@@ -230,6 +230,8 @@ function handlePostback(sender_psid, received_postback) {
                 //     }
                 // );
                 console.log('body 2 is:', body2);
+                console.log('count is:', body2.count);
+                console.log('one result:', body2.results[0].name);
                 for (var i = 0; i < body2.count; i++) {
                 //     outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
                 // }
