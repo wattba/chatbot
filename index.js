@@ -192,9 +192,11 @@ function handleMessage(sender_psid, received_message) {
             else if (body["entities"]["number"] != undefined) {
                 console.log("subject: ", body);
                 returnLessons(parseInt(body.entities.number[0].value), sender_psid);
-            } //else if (body._text ) {
-                
-            //}
+            } else if (received_message.quick_reply.payload != undefined ) {
+                let quickReplyPayload = received_message.quick_reply.payload;
+                let quickReplySubjectId = parseInt(quickReplyPayload.substring(10, ));
+                returnLessons(quickReplySubjectId, sender_psid)
+            }
             else {
                 response = {
                     "text": "How can i help you?"
