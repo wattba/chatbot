@@ -90,7 +90,7 @@ function returnLessons (subjectNumber, sender_psid) {
                 elements.push({
                     "title":body[i].title,
                     "image_url":body[i].image,
-                    "subtitle":body[i].title,
+                    "subtitle":body[i].summary,
                     "default_action": {
                         "type": "web_url",
                         "url": "google.com",
