@@ -138,7 +138,7 @@ function handleMessage(sender_psid, received_message) {
                         }
                         callSendAPI(sender_psid, response).then(() => {
                             response = {
-                                "text": "Can you please enter the subject number you want lessons for? :)"
+                                "text": "Please enter subject number like 'subject 1' to get lessons for subject 1"
                             }
                             return callSendAPI(sender_psid, response);
                         }); 
