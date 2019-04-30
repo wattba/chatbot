@@ -6,7 +6,8 @@ const
   bodyParser = require('body-parser'),
   app = express().use(bodyParser.json()), // creates express http server
   request = require('request'),
-  fetch  = require('node-fetch');
+  fetch  = require('node-fetch'),
+  axios = require('axios');
 const PAGE_ACCESS_TOKEN = "EAAisr0W2174BABxE3J7fOuItxSX9v6ZAeqtwQ5PV3MfEnkjxhTh7q4WZAA1hXuS0S48wyxxGM33xiCHEiakpCiknEoIqp5SOn4K5QxnnorPnVZAFYWRvyh85UelZBCllIbyQLuzqtqywNpPpvk2kieZAUFA5yETuXwbNZCRRgONgZDZD";
 // Creates the endpoint for our webhook 
 
@@ -65,13 +66,26 @@ app.post('/webhook', (req, res) => {
         let sender_psid = webhook_event.sender.id;
         console.log('Sender PSID: ' + sender_psid);
 
-        // Check if the event is a message or postback and
-        // pass the event to the appropriate handler function
-        if (webhook_event.message) {
-            handleMessage(sender_psid, webhook_event.message);        
-        } else if (webhook_event.postback) {
-            handlePostback(sender_psid, webhook_event.postback);
-        }
+        request({
+            uri: 'https://graph.facebook.com/' + sender_psid + '?fields=locale&access_token=EAAisr0W2174BABxE3J7fOuItxSX9v6ZAeqtwQ5PV3MfEnkjxhTh7q4WZAA1hXuS0S48wyxxGM33xiCHEiakpCiknEoIqp5SOn4K5QxnnorPnVZAFYWRvyh85UelZBCllIbyQLuzqtqywNpPpvk2kieZAUFA5yETuXwbNZCRRgONgZDZD'
+        }, function (err2, res2, body2) {
+                body2 = JSON.parse(body2);
+                let locale = body2.locale;
+                // Check if the event is a message or postback and
+                // pass the event to the appropriate handler function
+                if (webhook_event.message) {
+                    handleMessage(locale, sender_psid, webhook_event.message);        
+                } else if (webhook_event.postback) {
+                    handlePostback(locale, sender_psid, webhook_event.postback);
+                }
+            })
+        // // Check if the event is a message or postback and
+        // // pass the event to the appropriate handler function
+        // if (webhook_event.message) {
+        //     handleMessage(sender_psid, webhook_event.message);        
+        // } else if (webhook_event.postback) {
+        //     handlePostback(sender_psid, webhook_event.postback);
+        // }
         
     });
   
@@ -157,7 +171,7 @@ function returnLessons (subjectNumber, sender_psid) {
         })
 }
 // Handles messages events
-function handleMessage(sender_psid, received_message) {
+function handleMessage(locale, sender_psid, received_message) {
     let response;
     console.log(received_message.text);
     console.log('rm: ', received_message);
@@ -200,7 +214,7 @@ function handleMessage(sender_psid, received_message) {
                 let quickReplySubjectId = parseInt(quickReplyPayload.substring(10, ));
                 returnLessons(quickReplySubjectId, sender_psid)
             } else if ((received_message.text).includes("http") || (received_message.text).includes("www")) {
-                response = {"text": "Thanks for the link. Your link is sent to generate content"}
+                response = {"text": "Thanks for the link. Generating content from your link."}
                 callSendAPI(sender_psid, response);
             } else {
                 response = {
@@ -215,7 +229,7 @@ function handleMessage(sender_psid, received_message) {
 }
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
+function handlePostback(locale, sender_psid, received_postback) {
     let response;
 
     // Get the payload for the postback
@@ -224,6 +238,21 @@ function handlePostback(sender_psid, received_postback) {
     // Set the response based on the postback payload
     if (payload === "USER_DEFINED_PAYLOAD") { // which is for get_started
         response = {"text": "Welcome, great to see you. Together we’re building the world’s largest curriculum repository."}
+        if (locale != 'en_GB' && locale != 'en_US') 
+        {
+            axios.post('http://18.236.191.192:3000/translate', {
+                "text": response,
+                "src_lang":"en", 
+                "dst_lang": "de"
+            })
+            .then((res) => {
+                console.log(res)
+                response = res.result
+            })
+            .catch((error) => {
+                console.error(error)
+            })
+        }
         callSendAPI(sender_psid, response).then(() => {
           return callSendAPI(sender_psid, mainMenuResponse);
         });
