@@ -249,7 +249,7 @@ function handlePostback(locale, sender_psid, received_postback) {
             })
             .then((res) => {
                 console.log(res)
-                response = {"text": res.result}
+                response = {"text": res.data.result}
                 callSendAPI(sender_psid, response).then(() => {
                     return callSendAPI(sender_psid, mainMenuResponse);
                   });
