@@ -220,39 +220,25 @@ function handlePostback(sender_psid, received_postback) {
             uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
         }, function (err2, res2, body2) {
                 body2 = JSON.parse(body2);
-                // var outputSubjects = "";
                 let quick_replies = [];
-                // quick_replies.push(
-                //     {
-                //         "content_type":"text",
-                //         "title":body2.results[i].name,
-                //         "payload":body2.results[i].name
-                //     }
-                // );
-                console.log('body 2 is:', body2);
-                console.log('count is:', body2.count);
-                console.log('one result:', body2.results[0].name);
                 for (var i = 0; i < body2.count; i++) {
-                //     outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
-                // }
-                // response = {
-                //     "text": outputSubjects
                     quick_replies.push(
                         {
                             "content_type":"text",
                             "title":body2.results[i].name,
-                            "payload":body2.results[i].name
+                            "payload":"subject_id" + body2.results[i].id
                         }
                     );
                 }
-                // callSendAPI(sender_psid, response).then(() => {
                     response = {
                         "text": "Choose from the subjects below",
                         "quick_replies":quick_replies    
                     }
                     callSendAPI(sender_psid, response);
-                // }); 
             })
+    } else if (payload.includes("subject_id")) {
+        var res = parseInt(str.substring(10, ));
+        returnLessons(res, sender_psid);
     }
 }
 
