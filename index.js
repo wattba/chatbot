@@ -237,17 +237,18 @@ function handlePostback(locale, sender_psid, received_postback) {
     console.log('r_payloafd:', payload);
     // Set the response based on the postback payload
     if (payload === "USER_DEFINED_PAYLOAD") { // which is for get_started
-        response = {"text": "Welcome, great to see you. Together we’re building the world’s largest curriculum repository."}
+        let responseText = "Welcome, great to see you. Together we’re building the world’s largest curriculum repository.";
+        response = {"text": responseText}
         if (locale != 'en_GB' && locale != 'en_US') 
         {
             axios.post('http://18.236.191.192:3000/translate', {
-                "text": response,
+                "text": responseText,
                 "src_lang":"en", 
                 "dst_lang": "de"
             })
             .then((res) => {
                 console.log(res)
-                response = res.result
+                response = {"text": res.result}
             })
             .catch((error) => {
                 console.error(error)
