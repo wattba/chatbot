@@ -239,6 +239,7 @@ function handlePostback(locale, sender_psid, received_postback) {
     if (payload === "USER_DEFINED_PAYLOAD") { // which is for get_started
         let responseText = "Welcome, great to see you. Together we’re building the world’s largest curriculum repository.";
         response = {"text": responseText}
+        console.log('r1:', response);
         if (locale != 'en_GB' && locale != 'en_US') 
         {
             axios.post('http://18.236.191.192:3000/translate', {
@@ -249,11 +250,16 @@ function handlePostback(locale, sender_psid, received_postback) {
             .then((res) => {
                 console.log(res)
                 response = {"text": res.result}
+                callSendAPI(sender_psid, response).then(() => {
+                    return callSendAPI(sender_psid, mainMenuResponse);
+                  });
+                console.log('r2:', response);
             })
             .catch((error) => {
                 console.error(error)
             })
         }
+        console.log('r3:', response);
         callSendAPI(sender_psid, response).then(() => {
           return callSendAPI(sender_psid, mainMenuResponse);
         });
