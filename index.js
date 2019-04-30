@@ -131,7 +131,7 @@ function returnLessons (subjectNumber, sender_psid) {
                         {
                             "type": "postback",
                             "title": "Know More",
-                            "payload": "lesson_" //+ lesson_id
+                            "payload": "lesson_" + body[i].lesson_id
                         }
                     ]
                 });
@@ -217,10 +217,22 @@ function handlePostback(sender_psid, received_postback) {
     let payload = received_postback.payload;
     console.log('r_payloafd:', payload);
     // Set the response based on the postback payload
-    if (payload === "lesson_") { // which is for get_started
-        let moreDetails = "Subject: Math\nGrade: 2\nContent: When you learn maths, you will be able to count... well sorta";
-        response = {"text": moreDetails}
-        callSendAPI(sender_psid, response);
+    if (payload.includes("lesson_")) { // which is for get_started
+        let lesson_id;
+        lesson_id = parseInt(payload.substring(7, ));
+        request({
+            uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/quick/chatbot/lessons/' + lesson_id + '/detail'
+        }, function (err2, res2, body2) {
+                body2 = JSON.parse(body2);
+                let responseText = "";
+                responseText += "Subject: " + body2.subject + "\n";
+                responseText += "Grade: " + body2.grade + "\n";
+                responseText += "Content: " + body2.content + "\n"; 
+                response = {
+                    "text": responseText
+                }
+                callSendAPI(sender_psid, response);
+            })
     } else if (payload == "seeSubjects") {
         request({
             uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
@@ -250,26 +262,6 @@ function handlePostback(sender_psid, received_postback) {
 
 // Sends response messages via the Send API
 function callSendAPI(sender_psid, response) {
-    // Construct the message body
-    // let request_body = {
-    // "recipient": {
-    //     "id": sender_psid
-    // },
-    // "message": response
-    // }
-      // Send the HTTP request to the Messenger Platform
-    // request({
-    //     "uri": "https://graph.facebook.com/v2.6/me/messages",
-    //     "qs": { "access_token": PAGE_ACCESS_TOKEN },
-    //     "method": "POST",
-    //     "json": request_body
-    // }, (err, res, body) => {
-    //     if (!err) {
-    //     console.log('message sent!')
-    //     } else {
-    //     console.error("Unable to send message:" + err);
-    //     }
-    // }); 
     let body = {
         recipient: {
           "id": sender_psid
