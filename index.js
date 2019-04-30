@@ -229,7 +229,24 @@ function handlePostback(sender_psid, received_postback) {
                 }
                 callSendAPI(sender_psid, response).then(() => {
                     response = {
-                        "text": "Please enter subject number like 'subject 1' to get lessons for subject 1"
+                        "text": "Here is a quick reply!",
+                        "quick_replies":[
+                            {
+                                "content_type":"text",
+                                "title":"Maths",
+                                "payload":"maths"
+                            },
+                            {
+                                "content_type":"text",
+                                "title":"Science",
+                                "payload":"science"
+                            },
+                            {
+                                "content_type":"text",
+                                "title":"Language",
+                                "payload":"language"
+                            }
+                        ]    
                     }
                     return callSendAPI(sender_psid, response);
                 }); 
