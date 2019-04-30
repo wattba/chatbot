@@ -25,6 +25,11 @@ let mainMenuResponse = {
               "title": "See subjects",
               "payload": "seeSubjects",
             },
+            {
+                "type": "postback",
+                "title": "Create Resource",
+                "payload": "createResource",
+            },
             // {
             //   "type": "postback",
             //   "title": "Get a Fashion tip",
@@ -183,21 +188,21 @@ function handleMessage(sender_psid, received_message) {
                             return callSendAPI(sender_psid, response);
                         }); 
                     })
-                }
-            else if (body["entities"]["bye"] != undefined) {
+            } else if (body["entities"]["bye"] != undefined) {
                 response = {
                     "text": "Ok, see you later"
                 }
-            }
-            else if (body["entities"]["number"] != undefined) {
+            } else if (body["entities"]["number"] != undefined) {
                 console.log("subject: ", body);
                 returnLessons(parseInt(body.entities.number[0].value), sender_psid);
             } else if (received_message.quick_reply != undefined ) {
                 let quickReplyPayload = received_message.quick_reply.payload;
                 let quickReplySubjectId = parseInt(quickReplyPayload.substring(10, ));
                 returnLessons(quickReplySubjectId, sender_psid)
-            }
-            else {
+            } else if ((received_message.text).includes("http") || (received_message.text).includes("www")) {
+                response = {"text": "Thanks for the link. Your link is sent to generate content"}
+                callSendAPI(sender_psid, response);
+            } else {
                 response = {
                     "text": "How can i help you?"
                 }
@@ -259,6 +264,11 @@ function handlePostback(sender_psid, received_postback) {
                     }
                     callSendAPI(sender_psid, response);
             })
+    } else if (payload == "createResource") {
+        response = {
+            "text": "Send me a link to automatically generate the resource."
+        }
+        callSendAPI(sender_psid, response);
     } else if (payload.includes("subject_id")) {
         var res = parseInt(str.substring(10, ));
         returnLessons(res, sender_psid);
