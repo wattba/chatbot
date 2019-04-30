@@ -258,11 +258,12 @@ function handlePostback(locale, sender_psid, received_postback) {
             .catch((error) => {
                 console.error(error)
             })
+        } else {
+            console.log('r3:', response);
+            callSendAPI(sender_psid, response).then(() => {
+            return callSendAPI(sender_psid, mainMenuResponse);
+            });
         }
-        console.log('r3:', response);
-        callSendAPI(sender_psid, response).then(() => {
-          return callSendAPI(sender_psid, mainMenuResponse);
-        });
     } else if (payload.includes("lesson_")) { // which is for get_started
         let lesson_id;
         lesson_id = parseInt(payload.substring(7, ));
