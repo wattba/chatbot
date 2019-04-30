@@ -144,7 +144,7 @@ function returnLessons (subjectNumber, sender_psid) {
                     "subtitle":body[i].summary,
                     "default_action": {
                         "type": "web_url",
-                        "url": "google.com",
+                        "url": "example.com",
                     },
                     "buttons": [
                         {
@@ -183,7 +183,7 @@ function handleMessage(locale, sender_psid, received_message) {
         }, function( err, res, body) {
             console.log('body is:', body);
             body = JSON.parse(body);
-            
+
             if ((received_message.text).includes("http") || (received_message.text).includes("www")) {
                 response = {"text": "Thanks for the link. Generating content from your link."}
                 callSendAPI(sender_psid, response);
