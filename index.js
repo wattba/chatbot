@@ -220,66 +220,28 @@ function handlePostback(sender_psid, received_postback) {
             uri: 'http://wattba.h9ssxfia9b.us-west-2.elasticbeanstalk.com/api/v1/subjects/'
         }, function (err2, res2, body2) {
                 body2 = JSON.parse(body2);
-                var outputSubjects = "";
-                for (var i = 0; i < body2.count; i++) {
-                    outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
-                }
-                response = {
-                    "text": outputSubjects
-                }
-                callSendAPI(sender_psid, response).then(() => {
+                // var outputSubjects = "";
+                let quick_replies = [];
+                quick_replies.push(
+                    {
+                        "content_type":"text",
+                        "title":body2.results[i].name,
+                        "payload":body2.results[i].name
+                    }
+                );
+                // for (var i = 0; i < body2.count; i++) {
+                //     outputSubjects += (i+1) + ". " + body2.results[i].name + "\n";
+                // }
+                // response = {
+                //     "text": outputSubjects
+                // }
+                // callSendAPI(sender_psid, response).then(() => {
                     response = {
                         "text": "Here is a quick reply!",
-                        "quick_replies":[
-                            {
-                                "content_type":"text",
-                                "title":"Maths",
-                                "payload":"maths"
-                            },
-                            {
-                                "content_type":"text",
-                                "title":"Science",
-                                "payload":"science"
-                            },
-                            {
-                                "content_type":"text",
-                                "title":"Language",
-                                "payload":"language"
-                            },
-                            {
-                                "content_type":"text",
-                                "title":"Language",
-                                "payload":"language"
-                            },
-                            {
-                                "content_type":"text",
-                                "title":"Language",
-                                "payload":"language"
-                            },
-                            {
-                                "content_type":"text",
-                                "title":"Language",
-                                "payload":"language"
-                            },
-                            {
-                                "content_type":"text",
-                                "title":"Language",
-                                "payload":"language"
-                            },
-                            {
-                                "content_type":"text",
-                                "title":"Language",
-                                "payload":"language"
-                            },
-                            {
-                                "content_type":"text",
-                                "title":"Language",
-                                "payload":"language"
-                            }
-                        ]    
+                        "quick_replies":quick_replies    
                     }
-                    return callSendAPI(sender_psid, response);
-                }); 
+                    callSendAPI(sender_psid, response);
+                // }); 
             })
     }
 }
